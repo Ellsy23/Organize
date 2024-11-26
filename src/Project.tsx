@@ -17,11 +17,11 @@ const Projects: React.FC = () => {
   ];
 
   return (
-    <section className="mb-8">
+    <section className="p-4">
       <h3 className="text-xl font-semibold mb-4">Projects</h3>
       <div className="grid gap-4">
         {projects.map((project, index) => (
-          <div key={index} className="bg-white p-4 rounded-lg shadow">
+          <div key={index} className="bg-gray-100 p-4 rounded-lg shadow">
             <h4 className="font-bold">{project.title}</h4>
             <p className="text-gray-600 text-sm">{project.description}</p>
             <div className="mt-2">

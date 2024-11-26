@@ -1,71 +1,74 @@
-import React from "react";
-import HTMLFlipBook from "react-pageflip";
-import Header from "./Header";
-import Profile from "./Profile";
-import Projects from "./Project";
-import Skills from "./Skills";
-import Contact from "./Contact";
+import React, { useState } from "react";
 
 const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const pages = [
+    "This is page 1 content.",
+    "This is page 2 content.",
+    "This is page 3 content.",
+    "This is page 4 content.",
+  ];
+
+  const handleNext = () => {
+    if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
-    <div className="app bg-gray-100 min-h-screen flex justify-center items-center">
-      <HTMLFlipBook
-        width={300}
-        height={400}
-        className="shadow-xl"
-        showCover={true}
-        children={undefined}
-        style={undefined}
-        startPage={0}
-        size={"fixed"}
-        minWidth={0}
-        maxWidth={0}
-        minHeight={0}
-        maxHeight={0}
-        drawShadow={false}
-        flippingTime={0}
-        usePortrait={false}
-        startZIndex={0}
-        autoSize={false}
-        maxShadowOpacity={0}
-        mobileScrollSupport={false}
-        clickEventForward={false}
-        useMouseEvents={false}
-        swipeDistance={0}
-        showPageCorners={false}
-        disableFlipByClick={false}
-      >
-        {/* Cover Page */}
-        <div className="page bg-blue-500 text-white flex flex-col justify-center items-center">
-          <h1 className="text-2xl font-bold">My Portfolio</h1>
-          <p className="text-sm mt-2">Welcome to my interactive portfolio</p>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      {/* 책 컨테이너 */}
+      <div className="relative w-full max-w-md h-[75vw] max-h-[500px] perspective">
+        {pages.map((content, index) => (
+          <div
+            key={index}
+            className={`absolute w-full h-full transition-transform duration-500 transform-gpu ${
+              index === currentPage
+                ? "z-20 rotate-y-0"
+                : index < currentPage
+                ? "z-10 -rotate-y-180"
+                : "z-10 rotate-y-0"
+            }`}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* 앞면 */}
+            <div className="absolute w-full h-full bg-white border shadow-md flex items-center justify-center backface-hidden">
+              <p className="text-center text-gray-800">{content}</p>
+            </div>
+            {/* 뒷면 */}
+            <div className="absolute w-full h-full bg-gray-200 border shadow-md flex items-center justify-center backface-hidden transform rotate-y-180">
+              <p className="text-center text-gray-600">
+                Back of Page {index + 1}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Profile Page */}
-        <div className="page bg-white">
-          <Profile />
-        </div>
-
-        {/* Projects Page */}
-        <div className="page bg-white">
-          <Projects />
-        </div>
-
-        {/* Skills Page */}
-        <div className="page bg-white">
-          <Skills />
-        </div>
-
-        {/* Contact Page */}
-        <div className="page bg-white">
-          <Contact />
-        </div>
-
-        {/* Back Cover */}
-        <div className="page bg-blue-500 text-white flex justify-center items-center">
-          <p className="text-sm">Thank you for visiting!</p>
-        </div>
-      </HTMLFlipBook>
+      {/* 컨트롤 버튼 */}
+      <div className="flex gap-4 mt-6">
+        <button
+          onClick={handlePrev}
+          disabled={currentPage === 0}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNext}
+          disabled={currentPage === pages.length - 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

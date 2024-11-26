@@ -2,7 +2,7 @@ import React from "react";
 
 const Profile: React.FC = () => {
   return (
-    <section className="text-center mb-8">
+    <section className="text-center p-4">
       <img
         src="https://via.placeholder.com/100"
         alt="Profile"
