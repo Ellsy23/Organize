@@ -1,13 +1,25 @@
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "./styles.css";
+import "animate.css/animate.min.css";
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const pages = [
-    "This is page 1 content.",
-    "This is page 2 content.",
-    "This is page 3 content.",
-    "This is page 4 content.",
+    {
+      img: "https://item.kakaocdn.net/do/a38bc20a170b3c1238de8d0b99d4ca21f43ad912ad8dd55b04db6a64cddaf76d",
+    },
+    {
+      img: "https://d2x8kymwjom7h7.cloudfront.net/live/application_no/96001/default/COMMUNITY/4e14b9b8f1b740e3ac15309fb3ec7047/47db5e64a1504969af6e335fd3fb935c.png",
+    },
+    {
+      img: "https://image.fmkorea.com/files/attach/new2/20220101/1378413927/151958955/4213168884/8d097999558dd19ee55fff2d23488db6.png",
+    },
+    {
+      img: "https://samanbo.com/monoka/page/tobi/249-minipouch/pouch-01.gif",
+    },
   ];
 
   const handleNext = () => {
@@ -22,51 +34,80 @@ const App: React.FC = () => {
     }
   };
 
+  const handleFirst = () => {
+    setCurrentPage(0);
+  };
+
+  const handleLast = () => {
+    setCurrentPage(pages.length - 1);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {/* 책 컨테이너 */}
-      <div className="relative w-full max-w-md h-[75vw] max-h-[500px] perspective">
-        {pages.map((content, index) => (
+    <div className="app bg-light text-center">
+      {/* Header */}
+      <div className="py-5 bg-primary text-white shadow">
+        <h1 className="display-4 fw-bold animate__animated animate__bounce">
+          🎉 골드공장 🎉
+        </h1>
+        <p className="lead">새해 복 많이 받으세요!</p>
+      </div>
+
+      {/* Book Container */}
+      <div className="book-container container d-flex justify-content-center my-5">
+        {pages.map((page, index) => (
           <div
             key={index}
-            className={`absolute w-full h-full transition-transform duration-500 transform-gpu ${
+            className={`page ${
               index === currentPage
-                ? "z-20 rotate-y-0"
+                ? "visible animate__animated animate__fadeIn"
                 : index < currentPage
-                ? "z-10 -rotate-y-180"
-                : "z-10 rotate-y-0"
+                ? "hidden-left animate__animated animate__fadeOutLeft"
+                : "hidden-right animate__animated animate__fadeOutRight"
             }`}
-            style={{ transformStyle: "preserve-3d" }}
           >
-            {/* 앞면 */}
-            <div className="absolute w-full h-full bg-white border shadow-md flex items-center justify-center backface-hidden">
-              <p className="text-center text-gray-800">{content}</p>
+            <div className="front bg-white border rounded shadow p-4">
+              <img
+                src={page.img}
+                alt={`Page ${index + 1}`}
+                className="img-fluid rounded mb-3"
+              />
             </div>
-            {/* 뒷면 */}
-            <div className="absolute w-full h-full bg-gray-200 border shadow-md flex items-center justify-center backface-hidden transform rotate-y-180">
-              <p className="text-center text-gray-600">
-                Back of Page {index + 1}
-              </p>
+            <div className="back bg-warning border rounded shadow p-4">
+              <p>골드공장 뒤쪽 {index + 1}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* 컨트롤 버튼 */}
-      <div className="flex gap-4 mt-6">
+      {/* Controls */}
+      <div className="controls d-flex justify-content-center gap-3 flex-wrap">
+        <button
+          onClick={handleFirst}
+          className="btn btn-primary"
+          disabled={currentPage === 0}
+        >
+          첫 페이지로
+        </button>
         <button
           onClick={handlePrev}
+          className="btn btn-warning"
           disabled={currentPage === 0}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           Previous
         </button>
         <button
           onClick={handleNext}
+          className="btn btn-warning"
           disabled={currentPage === pages.length - 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           Next
+        </button>
+        <button
+          onClick={handleLast}
+          className="btn btn-primary"
+          disabled={currentPage === pages.length - 1}
+        >
+          마지막 페이지로
         </button>
       </div>
     </div>
